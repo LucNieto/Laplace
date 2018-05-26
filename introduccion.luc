@@ -1,0 +1,13 @@
+************************************************
+* Bienvenidos al espacio de Laplace...          *
+* Éste pequeño software pretende determinar si  *
+* un sistema es estable o no, toma como entrada *
+* una ecuación diferencial lineal de segundo 	*
+* grado, e.g.                                   *
+*          y''(t) + y'(t) + y(t) = f(t)         *
+* Por convención se recomienda que la variable  *
+* independiente sea "t" y la dependiente sea "y"*
+* pero pueden tomar cualquier otro valor dentro *
+* del rango del abecedario español              *
+*************************************************      
+ 
