@@ -30,30 +30,15 @@ void genera_lenguaje_maquina();
 %token <ival> NUMERO
 %token <fval> DOBLE
 
-//%type <strVal> EXPRESSION
 
-
-%token   PRIMA MAS MENOS POR ENTRE IGUAL AL PUNTO_Y_COMA ABRE_PARENTESIS  CIERRA_PARENTESIS
+%token   PRIMA MAS MENOS POR ENTRE AL PUNTO_Y_COMA ABRE_PARENTESIS  CIERRA_PARENTESIS
 
 %start input
 
 %%
 input:
-  | line
+  | input line
   ;
-
-  //line:  EXPRESSION 
-  //;
- // DECLARATION: EXPRESSION MAS EXPRESSION MAS EXPRESSION IGUAL EXPRESSION PUNTO_Y_COMA {printf(" y''(t) + y'(t) + y(t) = f(t)");}
-  //| EXPRESSION MAS EXPRESSION IGUAL EXPRESSION PUNTO_Y_COMA 
-  //{printf("y'(t) + y(t) = f(t)");}
-  //| EXPRESSION MENOS EXPRESSION MAS EXPRESSION IGUAL EXPRESSION PUNTO_Y_COMA
-  //{printf(" y''(t) - y'(t) + y(t) = f(t)");}
- // | EXPRESSION MENOS EXPRESSION MENOS EXPRESSION IGUAL EXPRESSION PUNTO_Y_COMA
- // {printf(" y''(t) - y'(t) - y(t) = f(t)");}
-  //| EXPRESSION MAS EXPRESSION MENOS EXPRESSION IGUAL EXPRESSION PUNTO_Y_COMA
-  //{printf(" y''(t) + y'(t) - y(t) = f(t)");}
-  //;
 
   line: NUMERO VARIABLE PRIMA ABRE_PARENTESIS VARIABLE CIERRA_PARENTESIS PUNTO_Y_COMA{
    char lap =toupper($2);
@@ -71,17 +56,17 @@ input:
   | VARIABLE ABRE_PARENTESIS VARIABLE CIERRA_PARENTESIS  PUNTO_Y_COMA {
      char lap =toupper($1);
 
-	 printf("Espacio de Laplace: %c(s)\n", lap);
+	printf("Espacio de Laplace: %c(s)\n", lap);
   }
   | NUMERO VARIABLE PRIMA PRIMA ABRE_PARENTESIS VARIABLE CIERRA_PARENTESIS PUNTO_Y_COMA {
      char lap =toupper($2);
 
-	 printf("Espacio de Laplace %d[S^\u00B2%c(s)] \n",$1, lap);
+	printf("Espacio de Laplace %d[S^\u00B2%c(s)] \n",$1, lap);
   }
     | VARIABLE PRIMA PRIMA ABRE_PARENTESIS VARIABLE CIERRA_PARENTESIS PUNTO_Y_COMA {
      char lap =toupper($1);
 
-	 printf("Espacio de Laplace S^\u00B2%c(s) \n", lap);
+	printf("Espacio de Laplace S^\u00B2%c(s) \n", lap);
   }
    | VARIABLE PUNTO_Y_COMA {
 	printf("Espacio de Laplace 1/S^\u00B2\n");
@@ -89,14 +74,50 @@ input:
   | VARIABLE AL NUMERO PUNTO_Y_COMA {
   int potencia = $3;
   long num = multiplyNumbers(potencia);
+  // long num_con = num-1;
+ // printf("%ld",num);
+    //printf("%ld",num_con);
+
+ // char* pot_con = superscript((num_con));
     char* pot_den = superscript(num+1);
+  //printf("%s",tmp);
 
   printf("Espacio de Laplace:  [%ld/S^%s]%c^%d",  multiplyNumbers(potencia),  pot_den,$1,$3);
   }
   ;
 
 
+  //IMPRIME ABRE_PARENTESIS CADENA CIERRA_PARENTESIS PUNTO_Y_COMA {
+  							//FILE *fptr;
+							//fptr = fopen("emp.c", "w");
+							//fprintf(fptr, "#include <stdio.h>\n");
+							//fprintf(fptr, "int main(){\n");
+							//fprintf(fptr, "\tprintf(%s",$3);
+							//fprintf(fptr, "\t\t\nreturn 0;\n}");
+							//fclose(fptr);
+							//ensangrador();
+							//genera_lenguaje_maquina();
 
+ 							//}
+	 //|IMPRIME ABRE_PARENTESIS operacion CIERRA_PARENTESIS PUNTO_Y_COMA { 
+	   							//FILE *fptr;
+							//fptr = fopen("emp.c", "w");
+							//fprintf(fptr, "#include <stdio.h>\n");
+							//fprintf(fptr, "int main(){\n");
+							//fprintf(fptr, "\tprintf(\"%%d \\n \",%d );",$3);
+							//fprintf(fptr, "\t\t\nreturn 0;\n}");
+							//fclose(fptr);
+							//ensangrador();
+							//genera_lenguaje_maquina();
+							//}
+//;
+
+//operacion: NUMERO {$$ = $1;}
+//|NUMERO MAS NUMERO {$$ = $1 + $3;}
+//|NUMERO MENOS NUMERO {$$ = $1 - $3;}
+//|NUMERO POR NUMERO {$$ = $1 * $3;}
+//|NUMERO ENTRE NUMERO {$$ = $1 / $3;}
+//;
 %%
 long int multiplyNumbers(int n)
 {

@@ -53,11 +53,10 @@ extern int yydebug;
     MENOS = 263,
     POR = 264,
     ENTRE = 265,
-    IGUAL = 266,
-    AL = 267,
-    PUNTO_Y_COMA = 268,
-    ABRE_PARENTESIS = 269,
-    CIERRA_PARENTESIS = 270
+    AL = 266,
+    PUNTO_Y_COMA = 267,
+    ABRE_PARENTESIS = 268,
+    CIERRA_PARENTESIS = 269
   };
 #endif
 
@@ -73,7 +72,7 @@ union YYSTYPE
   float fval;
   char charVal;
 
-#line 77 "parser.tab.h" /* yacc.c:1909  */
+#line 76 "parser.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

@@ -20,7 +20,6 @@ salto_de_linea        \n
 "-"	{return MENOS;}
 "*"	{return POR;}
 "/"	{return ENTRE;}
-"="	{return IGUAL;}
 "^"	{return AL;}
 "'" {return PRIMA;}
 ";" {return PUNTO_Y_COMA;}
