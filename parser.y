@@ -14,6 +14,7 @@
 	char* superscript(long  x);
 void ensangrador();
 void genera_lenguaje_maquina();
+int sym[26];
 %}
 
 %define parse.lac full
@@ -24,54 +25,59 @@ void genera_lenguaje_maquina();
   int ival;
   float fval;
   char charVal;
+  int var;
 }
 
 %token <charVal> VARIABLE
 %token <ival> NUMERO
 %token <fval> DOBLE
+%token <var> VAR
+%type <ival> line
 
 
-%token   PRIMA MAS MENOS POR ENTRE AL PUNTO_Y_COMA ABRE_PARENTESIS  CIERRA_PARENTESIS
+%token   PRIMA MAS MENOS POR ENTRE       
 
 %start input
 
 %%
-input:
-  | input line
+input: input line  ';' { printf("%d\n\n", $2); } 
+  | //line input
   ;
 
-  line: NUMERO VARIABLE PRIMA ABRE_PARENTESIS VARIABLE CIERRA_PARENTESIS PUNTO_Y_COMA{
+  line:   VAR '=' NUMERO        { sym[$1] = $3; $$ = $1; }
+  |VAR  { $$ = sym[$1]; }
+  |NUMERO VARIABLE PRIMA '(' VARIABLE ')' {
    char lap =toupper($2);
+   $$ = ("%d[S%c(s)\n",$1, lap);
 
-	printf("Espacio de Laplace %d[S%c(s)] \n",$1, lap);
   }
-  |NUMERO PUNTO_Y_COMA{
+  |NUMERO {
   	printf("Espacio de Laplace: =  %d / s\n",$1);
   }
-  | VARIABLE PRIMA ABRE_PARENTESIS VARIABLE CIERRA_PARENTESIS  PUNTO_Y_COMA{
+  | VARIABLE PRIMA '(' VARIABLE ')'  {
    char lap =toupper($1);
 
 	printf("Espacio de Laplace: S%c(s)\n", lap);
   }
-  | VARIABLE ABRE_PARENTESIS VARIABLE CIERRA_PARENTESIS  PUNTO_Y_COMA {
+  | VARIABLE '(' VARIABLE ')'   {
      char lap =toupper($1);
 
 	printf("Espacio de Laplace: %c(s)\n", lap);
   }
-  | NUMERO VARIABLE PRIMA PRIMA ABRE_PARENTESIS VARIABLE CIERRA_PARENTESIS PUNTO_Y_COMA {
+  | NUMERO VARIABLE PRIMA PRIMA '(' VARIABLE ')'  {
      char lap =toupper($2);
 
 	printf("Espacio de Laplace %d[S^\u00B2%c(s)] \n",$1, lap);
   }
-    | VARIABLE PRIMA PRIMA ABRE_PARENTESIS VARIABLE CIERRA_PARENTESIS PUNTO_Y_COMA {
+    | VARIABLE PRIMA PRIMA '(' VARIABLE ')'  {
      char lap =toupper($1);
 
 	printf("Espacio de Laplace S^\u00B2%c(s) \n", lap);
   }
-   | VARIABLE PUNTO_Y_COMA {
+   | VARIABLE  {
 	printf("Espacio de Laplace 1/S^\u00B2\n");
   }
-  | VARIABLE AL NUMERO PUNTO_Y_COMA {
+  | VARIABLE '^' NUMERO  {
   int potencia = $3;
   long num = multiplyNumbers(potencia);
   // long num_con = num-1;

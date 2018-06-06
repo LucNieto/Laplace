@@ -62,12 +62,20 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "parser.y" /* yacc.c:339  */
+#line 1 "parser_2.y" /* yacc.c:339  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#define RED   "\x1B[31m"
+#define GRN   "\x1B[32m"
+#define YEL   "\x1B[33m"
+#define BLU   "\x1B[34m"
+#define MAG   "\x1B[35m"
+#define CYN   "\x1B[36m"
+#define WHT   "\x1B[37m"
+#define RESET "\x1B[0m"
 	int yylex (void);
 	void yyerror(char const *);
 	char* strval;
@@ -77,11 +85,14 @@
 	int parser();
 	long int multiplyNumbers(int n);
 	char* superscript(long  x);
-void ensangrador();
-void genera_lenguaje_maquina();
-int sym[26];
+    char ecu[20];
+    char* symbols[10];
+    char *symbolVal(char symbol);
+	void updateSymbolVal(char symbol, char *val);
+	int computeSymbolIndex(char token);
 
-#line 85 "parser.tab.c" /* yacc.c:339  */
+
+#line 96 "parser_2.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -100,9 +111,9 @@ int sym[26];
 #endif
 
 /* In a future release of Bison, this section will be replaced
-   by #include "parser.tab.h".  */
-#ifndef YY_YY_PARSER_TAB_H_INCLUDED
-# define YY_YY_PARSER_TAB_H_INCLUDED
+   by #include "parser_2.tab.h".  */
+#ifndef YY_YY_PARSER_2_TAB_H_INCLUDED
+# define YY_YY_PARSER_2_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -116,15 +127,13 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    VARIABLE = 258,
-    NUMERO = 259,
-    DOBLE = 260,
-    VAR = 261,
-    PRIMA = 262,
-    MAS = 263,
-    MENOS = 264,
-    POR = 265,
-    ENTRE = 266
+    ECUACION = 258,
+    PRIMA = 259,
+    BIPRIMA = 260,
+    NUMERO = 261,
+    VAR_INDEPENDIENTE = 262,
+    EXIT_LAPLACE = 263,
+    PRINT = 264
   };
 #endif
 
@@ -133,15 +142,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 23 "parser.y" /* yacc.c:355  */
+#line 34 "parser_2.y" /* yacc.c:355  */
 
-  char* strVal;
+  char* word;
   int ival;
   float fval;
   char charVal;
-  int var;
 
-#line 145 "parser.tab.c" /* yacc.c:355  */
+#line 153 "parser_2.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -154,11 +162,11 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_PARSER_TAB_H_INCLUDED  */
+#endif /* !YY_YY_PARSER_2_TAB_H_INCLUDED  */
 
 /* Copy the second part of user declarations.  */
 
-#line 162 "parser.tab.c" /* yacc.c:358  */
+#line 170 "parser_2.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -377,21 +385,21 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   32
+#define YYLAST   9
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  17
+#define YYNTOKENS  12
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  3
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  13
+#define YYNRULES  8
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  32
+#define YYNSTATES  13
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
 #define YYUNDEFTOK  2
-#define YYMAXUTOK   266
+#define YYMAXUTOK   264
 
 #define YYTRANSLATE(YYX)                                                \
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
@@ -404,12 +412,12 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-      14,    15,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,    12,
-       2,    13,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,    10,
+       2,    11,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,    16,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -426,15 +434,14 @@ static const yytype_uint8 yytranslate[] =
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     1,     2,     3,     4,
-       5,     6,     7,     8,     9,    10,    11
+       5,     6,     7,     8,     9
 };
 
 #if YYDEBUG
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    43,    43,    44,    47,    48,    49,    54,    57,    62,
-      67,    72,    77,    80
+       0,    48,    48,    51,    54,    58,    61,    64,    77
 };
 #endif
 
@@ -443,9 +450,9 @@ static const yytype_uint8 yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "VARIABLE", "NUMERO", "DOBLE", "VAR",
-  "PRIMA", "MAS", "MENOS", "POR", "ENTRE", "';'", "'='", "'('", "')'",
-  "'^'", "$accept", "input", "line", YY_NULLPTR
+  "$end", "error", "$undefined", "ECUACION", "PRIMA", "BIPRIMA", "NUMERO",
+  "VAR_INDEPENDIENTE", "EXIT_LAPLACE", "PRINT", "';'", "'='", "$accept",
+  "input", "line", YY_NULLPTR
 };
 #endif
 
@@ -455,14 +462,14 @@ static const char *const yytname[] =
 static const yytype_uint16 yytoknum[] =
 {
        0,   256,   257,   258,   259,   260,   261,   262,   263,   264,
-     265,   266,    59,    61,    40,    41,    94
+      59,    61
 };
 # endif
 
-#define YYPACT_NINF -10
+#define YYPACT_NINF -11
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-10)))
+  (!!((Yystate) == (-11)))
 
 #define YYTABLE_NINF -1
 
@@ -473,10 +480,8 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-     -10,    11,   -10,    -7,    -1,    -9,     0,    -6,     2,     9,
-      12,    14,   -10,    -8,    13,     5,   -10,    -4,   -10,    18,
-       7,   -10,    10,    20,    15,   -10,    22,    16,   -10,    17,
-     -10,   -10
+     -11,     0,   -11,   -10,   -11,   -11,   -11,    -1,    -4,     3,
+     -11,   -11,   -11
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -484,22 +489,20 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       3,     0,     1,    12,     7,     5,     0,     0,     0,     0,
-       0,     0,     2,     0,     0,     0,    13,     0,     4,     0,
-       0,     9,     0,     0,     0,     8,     0,     0,    11,     0,
-       6,    10
+       3,     0,     1,     0,     6,     5,     4,     0,     0,     0,
+       8,     2,     7
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -10,   -10,   -10
+     -11,   -11,   -11
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     1,     6
+      -1,     1,     8
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
@@ -507,42 +510,32 @@ static const yytype_int8 yydefgoto[] =
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_uint8 yytable[] =
 {
-       7,    13,    10,    22,    11,    15,    19,     8,    14,     9,
-      23,     2,    12,    16,     3,     4,    20,     5,    18,    17,
-      21,    24,    25,    27,    26,    29,     0,     0,     0,     0,
-      28,    30,    31
+       2,     9,    10,     3,     4,     5,    11,    12,     6,     7
 };
 
-static const yytype_int8 yycheck[] =
+static const yytype_uint8 yycheck[] =
 {
-       7,     7,     3,     7,    13,     3,    14,    14,    14,    16,
-      14,     0,    12,     4,     3,     4,     3,     6,     4,     7,
-      15,     3,    15,     3,    14,     3,    -1,    -1,    -1,    -1,
-      15,    15,    15
+       0,    11,     3,     3,     4,     5,    10,     4,     8,     9
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,    18,     0,     3,     4,     6,    19,     7,    14,    16,
-       3,    13,    12,     7,    14,     3,     4,     7,     4,    14,
-       3,    15,     7,    14,     3,    15,    14,     3,    15,     3,
-      15,    15
+       0,    13,     0,     3,     4,     5,     8,     9,    14,    11,
+       3,    10,     4
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    17,    18,    18,    19,    19,    19,    19,    19,    19,
-      19,    19,    19,    19
+       0,    12,    13,    13,    14,    14,    14,    14,    14
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     3,     0,     3,     1,     6,     1,     5,     4,
-       7,     6,     1,     3
+       0,     2,     3,     0,     1,     1,     1,     3,     2
 };
 
 
@@ -1475,109 +1468,69 @@ yyreduce:
     switch (yyn)
       {
           case 2:
-#line 43 "parser.y" /* yacc.c:1646  */
-    { printf("%d\n\n", (yyvsp[-1].ival)); }
-#line 1481 "parser.tab.c" /* yacc.c:1646  */
+#line 48 "parser_2.y" /* yacc.c:1646  */
+    {
+ printf(MAG"Laplace-UAA : %s%s\n" RESET,GRN, (yyvsp[-1].word)); 
+ }
+#line 1476 "parser_2.tab.c" /* yacc.c:1646  */
     break;
 
   case 4:
-#line 47 "parser.y" /* yacc.c:1646  */
-    { sym[(yyvsp[-2].var)] = (yyvsp[0].ival); (yyval.ival) = (yyvsp[-2].var); }
-#line 1487 "parser.tab.c" /* yacc.c:1646  */
+#line 54 "parser_2.y" /* yacc.c:1646  */
+    {
+	    	  printf("Adios\n");
+	    	  exit(EXIT_SUCCESS);
+          	}
+#line 1485 "parser_2.tab.c" /* yacc.c:1646  */
     break;
 
   case 5:
-#line 48 "parser.y" /* yacc.c:1646  */
-    { (yyval.ival) = sym[(yyvsp[0].var)]; }
-#line 1493 "parser.tab.c" /* yacc.c:1646  */
+#line 58 "parser_2.y" /* yacc.c:1646  */
+    {
+          		(yyval.word) = (yyvsp[0].word); //printf("ecuacion %s ", $1);
+        	}
+#line 1493 "parser_2.tab.c" /* yacc.c:1646  */
     break;
 
   case 6:
-#line 49 "parser.y" /* yacc.c:1646  */
+#line 61 "parser_2.y" /* yacc.c:1646  */
     {
-   char lap =toupper((yyvsp[-4].charVal));
-   (yyval.ival) = ("%d[S%c(s)\n",(yyvsp[-5].ival), lap);
-
-  }
-#line 1503 "parser.tab.c" /* yacc.c:1646  */
+        	(yyval.word) = (yyvsp[0].word); //printf("ecuacion %s ", $1);
+        }
+#line 1501 "parser_2.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 54 "parser.y" /* yacc.c:1646  */
+#line 64 "parser_2.y" /* yacc.c:1646  */
     {
-  	printf("Espacio de Laplace: =  %d / s\n",(yyvsp[0].ival));
-  }
-#line 1511 "parser.tab.c" /* yacc.c:1646  */
+       // updateSymbolVal($1,$3);
+        (yyval.word) = (yyvsp[0].word);
+      // strcpy(ecu, $3); 
+      //printf("%d",$1);
+      //strcat(symbols[$1],$3 );
+      int num_chars;
+      num_chars = strlen((yyvsp[0].word)) + 1;
+      symbols[(yyvsp[-2].charVal)] = (char*) malloc(num_chars);
+      strcpy(symbols[(yyvsp[-2].charVal)], (yyvsp[0].word));
+     // symbols[$1] =$3;
+
+       }
+#line 1519 "parser_2.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 57 "parser.y" /* yacc.c:1646  */
+#line 77 "parser_2.y" /* yacc.c:1646  */
     {
-   char lap =toupper((yyvsp[-4].charVal));
-
-	printf("Espacio de Laplace: S%c(s)\n", lap);
-  }
-#line 1521 "parser.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 9:
-#line 62 "parser.y" /* yacc.c:1646  */
-    {
-     char lap =toupper((yyvsp[-3].charVal));
-
-	printf("Espacio de Laplace: %c(s)\n", lap);
-  }
-#line 1531 "parser.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 10:
-#line 67 "parser.y" /* yacc.c:1646  */
-    {
-     char lap =toupper((yyvsp[-5].charVal));
-
-	printf("Espacio de Laplace %d[S^\u00B2%c(s)] \n",(yyvsp[-6].ival), lap);
-  }
-#line 1541 "parser.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 11:
-#line 72 "parser.y" /* yacc.c:1646  */
-    {
-     char lap =toupper((yyvsp[-5].charVal));
-
-	printf("Espacio de Laplace S^\u00B2%c(s) \n", lap);
-  }
-#line 1551 "parser.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 12:
-#line 77 "parser.y" /* yacc.c:1646  */
-    {
-	printf("Espacio de Laplace 1/S^\u00B2\n");
-  }
-#line 1559 "parser.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 13:
-#line 80 "parser.y" /* yacc.c:1646  */
-    {
-  int potencia = (yyvsp[0].ival);
-  long num = multiplyNumbers(potencia);
-  // long num_con = num-1;
- // printf("%ld",num);
-    //printf("%ld",num_con);
-
- // char* pot_con = superscript((num_con));
-    char* pot_den = superscript(num+1);
-  //printf("%s",tmp);
-
-  printf("Espacio de Laplace:  [%ld/S^%s]%c^%d",  multiplyNumbers(potencia),  pot_den,(yyvsp[-2].charVal),(yyvsp[0].ival));
-  }
-#line 1577 "parser.tab.c" /* yacc.c:1646  */
+        //printf(MAG"Laplace-UAA : %s%s\n" RESET,GRN, ecu);
+         //printf("%d\n",$2);
+        //printf(" %s\n",symbols[$2]);
+         (yyval.word) = symbols[(yyvsp[0].charVal)];
+        }
+#line 1530 "parser_2.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1581 "parser.tab.c" /* yacc.c:1646  */
+#line 1534 "parser_2.tab.c" /* yacc.c:1646  */
         default: break;
       }
     if (yychar_backup != yychar)
@@ -1817,68 +1770,37 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 127 "parser.y" /* yacc.c:1906  */
+#line 84 "parser_2.y" /* yacc.c:1906  */
 
-long int multiplyNumbers(int n)
-{
-    if (n >= 1)
-        return n*multiplyNumbers(n-1);
-    else
-        return 1;
-}
-
-void yyerror(char const *x){
+  void yyerror(char const *x){
 	printf("Error %s in line %d\n", x, yylineno);
-	exit(1);
-}
+	//exit(1);
+   }
 
-void ensangrador(){
-	char command[50];
-	strcpy( command, "\ngcc -o ensamblador.s -S emp.c " );
-   	system(command);
-}
+   void updateSymbolVal(char symbol, char *val){
+		int bucket = computeSymbolIndex(symbol);
+		//symbols[bucket] = val;
+		strcpy(symbols[bucket], val);
+	}
 
-void genera_lenguaje_maquina(){
-	char command[50];
-	strcpy( command, "\ngcc -o ejecutable ensamblador.s " );
-   	system(command);  	
-}
-char* superscript(long  num){
-long x = num;
-//printf("%ld\n", sizeof (x)+1);
-char y[sizeof (x)+1];
-snprintf(y, sizeof (y)+1, "%ld",x);
-y[sizeof (x)+1] = '\0';
-char utf[12]={};
-for (int i = 0; i <=sizeof (x); i++){
+	int computeSymbolIndex(char token){
+		int idx = -1;
+		if(islower(token)) {
+			idx = token - 'a' + 26;
+		} else if(isupper(token)) {
+			idx = token - 'A';
+		}
+		return idx;
+	} 
+	char *symbolVal(char symbol){
+		int bucket = computeSymbolIndex(symbol);
+		return symbols[bucket];
+	}
 
- switch(y[i]) {
-
-    case '0':  strcat(utf,"\u00B0");
-      break;
-    case '1':  strcat(utf,"\u00B9");
-      break;
-    case '2':  strcat(utf,"\u00B2");
-      break;
-    case '3':  strcat(utf,"\u00B3");
-      break;
-    case '4':  strcat(utf,"\u2074");
-   	  break;
-    case '5':  strcat(utf,"\u2075");
-      break;
-    case '6':  strcat(utf,"\u2076");
-      break;
-    case '7':  strcat(utf,"\u2077");
-      break;
-    case '8':  strcat(utf,"\u2078");
-      break;
-    case '9':  strcat(utf,"\u2079");
-    	break;
-    default:
-        //printf("This is not a number\n"); 
-        break;
-  }
-}
-char* tmp = (char*)utf;
-return tmp;
-}
+/*
+char str[80];
+strcpy(str, "these ");
+strcat(str, "strings ");
+strcat(str, "are ");
+strcat(str, "concatenated.");
+*/

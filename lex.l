@@ -1,3 +1,6 @@
+D			[0-9]
+L			[a-zA-Z_]
+
 %{
 	#include "parser.tab.h"
 	#include <string.h>
@@ -11,18 +14,12 @@ salto_de_linea        \n
 [-+]?[0-9]+		{yylval.ival = atoi(yytext); return NUMERO;}
 
 [a-z]                               {yylval.charVal = yytext[0];    return VARIABLE;}
-
+{L}({L}|{D})*     { yylval.var = *yytext - 'a'; return VAR; }
 "/*"((\*+[^/*])|([^*]))*\**"*/" 	{;}
 "//".* {;}
-"(" { return ABRE_PARENTESIS; }
-")" { return CIERRA_PARENTESIS; }
-"+"	{return MAS;}
-"-"	{return MENOS;}
-"*"	{return POR;}
-"/"	{return ENTRE;}
-"^"	{return AL;}
+[-+()=*^;] { return *yytext; }
 "'" {return PRIMA;}
-";" {return PUNTO_Y_COMA;}
+
 
 {salto_de_linea}                        {yylineno++;}
 {espacio}                                    {;}

@@ -30,8 +30,8 @@
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
-#ifndef YY_YY_PARSER_TAB_H_INCLUDED
-# define YY_YY_PARSER_TAB_H_INCLUDED
+#ifndef YY_YY_PARSER_2_TAB_H_INCLUDED
+# define YY_YY_PARSER_2_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -45,15 +45,13 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    VARIABLE = 258,
-    NUMERO = 259,
-    DOBLE = 260,
-    VAR = 261,
-    PRIMA = 262,
-    MAS = 263,
-    MENOS = 264,
-    POR = 265,
-    ENTRE = 266
+    ECUACION = 258,
+    PRIMA = 259,
+    BIPRIMA = 260,
+    NUMERO = 261,
+    VAR_INDEPENDIENTE = 262,
+    EXIT_LAPLACE = 263,
+    PRINT = 264
   };
 #endif
 
@@ -62,15 +60,14 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 23 "parser.y" /* yacc.c:1909  */
+#line 34 "parser_2.y" /* yacc.c:1909  */
 
-  char* strVal;
+  char* word;
   int ival;
   float fval;
   char charVal;
-  int var;
 
-#line 74 "parser.tab.h" /* yacc.c:1909  */
+#line 71 "parser_2.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -83,4 +80,4 @@ extern YYSTYPE yylval;
 
 int yyparse (void);
 
-#endif /* !YY_YY_PARSER_TAB_H_INCLUDED  */
+#endif /* !YY_YY_PARSER_2_TAB_H_INCLUDED  */
